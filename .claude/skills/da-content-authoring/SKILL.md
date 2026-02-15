@@ -333,7 +333,7 @@ document (light DOM)
 2. Click on the empty paragraph to focus the editor and position the cursor
 3. Build the complete HTML for the entire page, then paste it all at once
 
-**If the page has existing content that needs replacing:** Delete the page from the file browser and create a new one (see "Resetting a Corrupted Page" below). Do NOT try select-all + delete — ProseMirror table structures often survive deletion, leaving corrupted state.
+**If the page has existing content that needs replacing:** Rename the existing page in the file browser (to preserve it as a backup), then create a new page with the original name (see "Replacing an Existing Page" below). Do NOT try select-all + delete — ProseMirror table structures often survive deletion, leaving corrupted state.
 
 ### Paste HTML via Playwright
 
@@ -411,19 +411,59 @@ Here is a proven HTML structure for a complete page with multiple sections:
 - `colspan="2"` on section-metadata, metadata title rows.
 - Button links use semantic formatting: `<em><strong><a>` = accent, `<a><strong>` = primary, `<a><em>` = secondary.
 
-### Resetting a Corrupted Page
+### Replacing an Existing Page (Preferred)
 
-When a page has corrupted ProseMirror state (orphaned table structures, broken blocks, etc.), the fastest fix is to delete and recreate:
+When replacing an existing page's content entirely, **rename the original first** to preserve it as a backup, then create a fresh page with the original name:
 
 1. Navigate to the file browser: `https://da.live/#/permit-junction/permitjunction-website`
-2. Select the page's checkbox (use `force: true` click — labels intercept pointer events)
+2. Select the page's checkbox (use `force: true` via `browser_run_code` — `<label>` elements intercept pointer events on checkboxes)
+3. Click the **Rename** button in the action bar
+4. Clear the textbox (`Meta+a` then type), enter the new name (e.g., `index-original`), click **Confirm**
+5. Click **New** → **Document** → type the original page name (e.g., `index`) → click **Create document**
+6. Wait 3 seconds for the fresh editor to load
+7. Click on the empty paragraph to focus the editor
+8. Paste the complete HTML content via `browser_evaluate`
+
+**Why rename instead of delete:** Renaming preserves the original content as a backup. The owner can reference it later or restore it if needed. Deleting is permanent and irreversible.
+
+### Resetting a Corrupted Page
+
+When a page has corrupted ProseMirror state (orphaned table structures, broken blocks, etc.) and you don't need to preserve the original, you can delete and recreate:
+
+1. Navigate to the file browser: `https://da.live/#/permit-junction/permitjunction-website`
+2. Select the page's checkbox (use `force: true` via `browser_run_code` — `<label>` elements intercept pointer events)
 3. Click the **Delete** button in the action bar
 4. Confirm deletion in the dialog (use `force: true` click on the confirm button)
-5. Click **New** → **Document** → enter the page name → create
+5. Click **New** → **Document** → enter the page name → click **Create document**
 6. Wait 3 seconds for the fresh editor to load
-7. Paste the complete HTML content
+7. Click on the empty paragraph to focus the editor
+8. Paste the complete HTML content
 
 **Why this works:** A fresh page has a clean ProseMirror state with just an empty paragraph. Pasting into this clean state avoids column normalization issues caused by residual table DOM.
+
+### File Browser Action Workflows
+
+**Selecting items:** Checkboxes in the file browser are intercepted by `<label>` elements. Use `browser_run_code` with `force: true`:
+```javascript
+async (page) => {
+  const checkbox = page.locator('input#item-selected-N'); // N = item index (0-based)
+  await checkbox.click({ force: true });
+  return 'Selected';
+}
+```
+
+**Renaming a page:**
+1. Select the page checkbox (force click)
+2. Click **Rename** in the action bar (normal `browser_click` works)
+3. Click the rename textbox, `Meta+a` to select all, then `browser_type` the new name
+4. Click **Confirm**
+
+**Creating a new document:**
+1. Click **New** button
+2. Click **Document** from the dropdown
+3. Type the name in the textbox
+4. Click **Create document**
+5. DA auto-navigates to the new page's editor — wait 3 seconds for it to load
 
 ### What Does NOT Work
 
@@ -495,3 +535,5 @@ The hero block defaults to `color: #fff` (white text). Without a background imag
 13. **Cards are individual tables**: Each card is its own `<table>` block. Grid layout of multiple cards comes from section-metadata's `grid` key, not from putting multiple rows in one card table.
 14. **File browser force clicks**: Checkboxes and dialog buttons in the DA file browser need `force: true` because `<label>` and `<span>` elements intercept pointer events.
 15. **Screenshots go in `/tmp`**: When taking screenshots during authoring sessions (for visual verification), always save them to `/tmp/` (e.g., `filename: /tmp/test-page-preview.png`). NEVER save screenshots to the repo root. Clean up `/tmp/` screenshot files at the end of the session.
+16. **Rename, don't delete**: When replacing an existing page's content, always **rename** the original page first (e.g., `index` → `index-original`) to preserve it as a backup, then create a new page with the original name. Never delete a page unless explicitly asked to — the owner may want to reference or restore the original later.
+17. **Wait after actions for snapshot**: After clicking buttons or navigating in the DA UI, add `browser_wait_for: time=2` before taking a `browser_snapshot`. The snapshot sometimes returns empty if taken too quickly after an action.
