@@ -1,0 +1,10 @@
+{
+  "enabledPlugins": {
+    "playwright@claude-plugins-official": true,
+    "github@claude-plugins-official": true
+  },
+  "enabledMcpjsonServers": [
+    "helix-mcp-server"
+  ],
+  "enableAllProjectMcpServers": true
+}

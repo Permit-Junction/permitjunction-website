@@ -1,11 +1,21 @@
+# macOS
+.DS_Store
+
+# AEM
 .hlx/
+helix-importer-ui
+
+# Node.js
 coverage/
 logs/
 node_modules/
-
-helix-importer-ui
-.DS_Store
 *.bak
 .idea
 .wrangler
-.claude
+
+# Claude Code
+.claude/*
+!.claude/skills/
+!.claude/settings.json
+.mcp.json
+.playwright-mcp/
