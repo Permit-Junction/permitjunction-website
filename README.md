@@ -1,118 +1,168 @@
-# Author Kit
-For projects that want a few more batteries. Built by the team who brought you da.live and adobe.com.
+# Permit Junction Website
 
-## Getting started
+This repository powers **[www.permitjunction.com](https://www.permitjunction.com/)**, built on **AEM Edge Delivery Services** (Author Kit). The site uses a buildless architecture: blocks are vanilla JavaScript/CSS modules loaded at runtime—no compile step required.
 
-### 1. Github
-1. Use this template to make a new repo.
-1. Install [AEM Code Sync](https://da.live/bot).
+---
 
-### 2. DA content
-1. Browse to https://da.live/start.
-2. Follow the steps.
+## Who should read what
 
-### 3. Local development
-1. Clone your new repo to your computer.
-1. Install the AEM CLI using your terminal: `sudo npm install -g @adobe/aem-cli`
-1. Start the AEM CLI: `aem up`.
-1. Open the `{repo}` folder in your favorite code editor and buil something.
-1. **Recommended:** Install common npm packages like linting and testing: `npm i`.
+| You are a…         | Start here |
+|--------------------|------------|
+| **Content creator** | [Content creators: editing in DA](#content-creators-editing-in-da) |
+| **Developer**       | [Developers: local dev & shipping](#developers-local-dev--shipping) |
+| **Anyone using AI** | [Using the Claude Code agent](#using-the-claude-code-agent) |
 
-## Features
+---
 
-### Localization & globalization
-* Language only support - Ex: en, de, hi, ja
-* Region only support - Ex: en-us, en-ca, de-de, de-ch
-* Hybrid support - Ex: en, en-us, de, de-ch, de-at
-* Fragment-based localized 404s
-* Localized Header & Footer
-* Do not translate support (#_dnt)
+## Required tools
 
-### Flexible section authoring
-* Optional containers to constrain content
-* Grids: 1-6
-* Columns: 1-12
-* Color scheme: light, dark
-* Gap: xs, s, m, l, xl, xxl
-* Spacing: xs, s, m, l, xl, xxl
-* Background: token / image / color / gradient
+| Tool | Install | Docs |
+|------|---------|------|
+| **Google Chrome** | [Download](https://www.google.com/chrome/) | — |
+| **AEM Sidekick** (browser extension) | [Chrome Web Store](https://chromewebstore.google.com/detail/aem-sidekick/igkmdomcgoebiipaifhmpfjhbjccggml) | [Sidekick docs](https://www.aem.live/docs/sidekick) |
 
-### Base content
-* Universal buttons w/ extensive styles
-* Images w/ retina breakpoint
-* Color scheme support: light, dark
-* Modern favicon support
-* New window support
-* Deep link support
-* Modal support
+---
 
-### Header and footer content
-* Brand - First link in header
-* Main Menu - First list in header
-* Actions - Last section of header
-* Menu & mega menu support
-* Disable header/footer via meta props
+## Important links
 
-### Scheduled content
-* Schedule content using spreadsheets
+| Purpose | URL |
+|---------|-----|
+| **DA editor** (edit content) | <https://da.live/edit#/permit-junction/permitjunction-website> |
+| **DA file browser** | <https://da.live/#/permit-junction/permitjunction-website> |
+| **Preview (main branch)** | <https://main--permitjunction-website--permit-junction.aem.page/> |
+| **Live origin (published)** | <https://main--permitjunction-website--permit-junction.aem.live/> |
+| **Branch preview pattern** | `https://{branch}--permitjunction-website--permit-junction.aem.page/{path}` |
+| **Public site (CDN)** | <https://www.permitjunction.com/> |
 
-### Sidekick & pre-production
-* Quick Edit
-* Extensible plumbing for plugins
-* Schedule simulator
-* Convert production links to relative
+---
 
-### Performance
-* Extensible LCP detection
+## Official documentation (further reading)
 
-### Developer tools
-* Environment detection
-* Extensible logging (console, coralogix, splunk, etc.)
-* Buildless reactive framework support (Lit)
-* Hash utils patterns (#_blank, #_dnt, etc)
-* Modern CSS scoping & nesting
-* AEM Operational Telemetry
+- **DA (Document Authoring)**: <https://docs.da.live>
+- **AEM Edge Delivery Services**: <https://www.aem.live/docs>
+- **AEM developer docs**: <https://www.aem.live/developer/>
+- **Performance best practices ("Keeping it 100")**: <https://www.aem.live/developer/keeping-it-100>
+- **Block Collection (reference implementations)**: <https://www.aem.live/developer/block-collection>
 
-### Operations
-* Cloudflare Worker reference implementation
+---
 
-## Patterns
-### Page
-A page is what holds your content. It can be styled using a metadata property called `template` which will load styles that apply to the entire page.
+## Content creators: editing in DA
 
-### Section
-A section is a sub-section of your page. It can be styled using a `section-metadata` block. A section will control the layout of blocks.
+### Where you edit
 
-### Block
-Blocks are children of sections. A block adds visual context to parts of a page.
+All page content lives in **DA (Document Authoring)** at <https://da.live/edit#/permit-junction/permitjunction-website>.
 
-### Auto Block
-An auto block is a block generated from a pre-defined piece of content. Often times from a link that matches a particular pattern. Link-based auto blocks can be helpful when additional nesting of content is required.
+### How pages are structured
 
-### Default content
-Default content is content that lives outside a block.
+- **Sections** are separated by horizontal rules (section breaks).
+- **Blocks** appear as tables with a colored title row (e.g., `hero`, `card`).
+- **Section metadata** is a special block at the end of a section that controls layout (grid, spacing, background, etc.).
 
-## Design System
+### How to preview
 
-### Spacing & Gap
-XS, S, M, L, XL, XXL
+1. **In DA**: Click the blue paper-airplane icon → **Preview**. This opens a `.aem.page` URL in a new tab showing your latest changes.
+2. **In browser**: Use the AEM Sidekick toolbar → **Preview** or **Update** to refresh.
 
-### Emphasis
-quiet, default, strong, negative
+### Publishing
 
-### Buttons
-accent, primary, secondary, negative
-(w/ outline variations)
+- **Preview is safe**—it only affects the preview environment.
+- **Publish updates what visitors see** on the live site.
+- If you are not an authorized operator, **request publish** from someone who is.
 
-### Columns
-1 - 12
+---
 
-### Grid
-1 - 6
+## Developers: local dev & shipping
 
-### Color tokens
-blue, gray, green, magenta, organge, red, purple, yellow
-(w/ 100-900 variations)
+### Prerequisites
 
-### Color schemes
-light, dark
+- Node.js / npm
+- AEM CLI: `npm install -g @adobe/aem-cli`
+- (Recommended) Chrome + AEM Sidekick for testing against preview/live
+
+### Local development
+
+```bash
+# Install dependencies
+npm install
+
+# Start local dev server (serves at http://localhost:3000)
+aem up
+
+# Linting
+npm run lint        # JS + CSS
+npm run lint:js     # ESLint only
+npm run lint:css    # Stylelint only
+
+# Testing
+npm test            # All tests with coverage
+npm run test:watch  # Watch mode
+```
+
+### Repo map (where to change things)
+
+| What | Location | Notes |
+|------|----------|-------|
+| Blocks | `blocks/` | Each block has `{name}.js` + `{name}.css` |
+| Site entry/config | `scripts/scripts.js` | Hostnames, locales, link-block patterns |
+| Core framework | `scripts/ak.js` | **Do not modify**—this is the shared AEM framework |
+| Global styles/tokens | `styles/` | Design tokens, base element styles |
+
+### Shipping changes
+
+1. Create a feature branch and push your changes.
+2. AEM Code Sync automatically generates a branch preview: `https://{branch}--permitjunction-website--permit-junction.aem.page/{path}`
+3. Open a PR to `main`. **Include at least one preview link** in the PR description (required for automated checks).
+4. After review, merge to `main`. An operator can then publish content to make changes live.
+
+---
+
+## Using the Claude Code agent
+
+This repo is configured for **Claude Code**, an AI coding agent that can help both content creators and developers.
+
+### What the agent can do for content creators
+
+- Rewrite, shorten, or expand copy on a specific DA page
+- Draft new sections, headings, or CTAs
+- Suggest block structures (tables) and walk you through authoring steps
+- Navigate DA, make edits, and trigger **Preview** (if browser automation is enabled)
+
+### What the agent can do for developers
+
+- Implement or modify blocks (JS/CSS), update global styles, fix bugs
+- Run lint and tests, troubleshoot errors
+- Generate PR-ready commit messages and ensure preview links are included
+- Use browser automation to visually verify pages (screenshots, responsive checks)
+
+### What the agent will NOT do by default
+
+- **Publish** content unless you explicitly ask and confirm
+- **Commit or push** changes unless you explicitly ask
+- Add secrets to the repo—keep tokens in local-only files (`.claude/settings.local.json`, `.mcp.json`)
+
+### How to ask effectively
+
+**Content example:**
+> Update this DA page `https://da.live/edit#/permit-junction/permitjunction-website/services` with these copy changes: … then preview (don't publish).
+
+**Code example:**
+> Change the `hero` block to support a new `compact` variant. Test on `/drafts/test-hero`. Run `npm run lint` when done.
+
+### Repo-specific agent features
+
+- **Skills** (specialized workflows) live in `.claude/skills/`. Key ones:
+  - `/da-content-authoring` — content editing in DA
+  - `/content-driven-development` — code changes with content-first validation
+  - `/testing-blocks` — testing and PR prep
+- **Project settings** are in `.claude/settings.json`.
+
+### Claude Code documentation
+
+- Setup: <https://code.claude.com/docs/en/setup>
+- Quickstart: <https://docs.anthropic.com/en/docs/claude-code/quickstart>
+
+---
+
+## License
+
+Apache License 2.0 — see [LICENSE](LICENSE).
